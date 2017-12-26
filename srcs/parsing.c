@@ -12,7 +12,7 @@
 
 #include "./../includes/rtv1.h"
 
-int		ft_count(char **tab)
+/*int		ft_count(char **tab)
 {
 	int count;
 
@@ -79,9 +79,12 @@ char	**fill_tab(int line_value, char *file)
 	return (tab);
 }
 
-int		parsing(char *filename, t_mlx *mlx)
+*/int		parsing(char *filename, t_mlx *mlx)
 {
-	int		fd;
+	if (mlx)
+		filename = "ok";
+	return (9000);
+	/*int		fd;
 	char	*buffer;
 	char	**tab;
 	int		k;
@@ -101,5 +104,5 @@ int		parsing(char *filename, t_mlx *mlx)
 	while (++k < Y_NBR)
 		free(tab[k]);
 	free(tab);
-	return (0);
+	return (0);*/
 }

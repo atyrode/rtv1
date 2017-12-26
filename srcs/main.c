@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../includes/wolf3d.h"
+#include "./../includes/rtv1.h"
 
-void	redraw_raytracing(t_mlx *mlx)
+void	redraw(t_mlx *mlx)
 {
 	mlx_clear_window(mlx->mlx, mlx->win);
 	delete_image(mlx);
 	new_image(mlx);
-	raytracing(mlx);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->image->image, 0, 0);
+	rtv1(mlx);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->image, 0, 0);
 	mlx_do_sync(mlx->mlx);
 }
 
@@ -26,15 +26,14 @@ int		main(int argc, char **argv)
 {
 	t_mlx	*mlx;
 
-	if (!(argc == 2) || !(argv))
+	if (!(argc == 1) || !(argv))
 		return (-1);
 	if ((mlx = initialize()) == NULL)
 		return (-1);
-	parsing("maps/map.wolf", mlx);
+	parsing(NULL, mlx);
 	hooks(mlx);
-	rt_init(mlx);
-	raytracing(mlx);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->image->image, 0, 0);
+	rtv1(mlx);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->image, 0, 0);
 	mlx_loop(mlx->mlx);
 	return (0);
 }

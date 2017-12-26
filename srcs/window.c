@@ -16,12 +16,10 @@ t_mlx		*mlx_free(t_mlx *mlx)
 {
 	if (mlx->win != NULL)
 		mlx_destroy_window(mlx->mlx, mlx->win);
-	if (mlx->image != NULL)
+	if (mlx->img != NULL)
 		delete_image(mlx);
 	if (mlx->env != NULL)
 		ft_memdel((void **)&mlx->env);
-	if (mlx->rt != NULL)
-		ft_memdel((void **)&mlx->rt);
 	ft_memdel((void **)&mlx);
 	exit(-1);
 }
@@ -34,9 +32,8 @@ t_mlx		*initialize(void)
 		return (NULL);
 	if ((mlx->mlx = mlx_init()) == NULL
 			|| (mlx->win = mlx_new_window(mlx->mlx, W_WIDTH, W_HEIGHT,
-					"Wolf3D")) == NULL
-			|| (mlx->image = new_image(mlx)) == NULL
-			|| (mlx->rt = ft_memalloc(sizeof(t_rt))) == NULL
+					"RTv1")) == NULL
+			|| (mlx->img = new_image(mlx)) == NULL
 			|| (mlx->env = ft_memalloc(sizeof(t_env))) == NULL)
 		return (mlx_free(mlx));
 	return (mlx);

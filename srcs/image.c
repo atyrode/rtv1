@@ -14,31 +14,33 @@
 
 void	image_set_pixel(t_mlx *mlx)
 {
-	if (X1 < 0 || X1 >= W_WIDTH || Y1 < 0 || Y1 >= W_HEIGHT)
+	if (mlx->env->x < 0 || mlx->env->x >= W_WIDTH
+			|| mlx->env->y < 0 || mlx->env->y >= W_HEIGHT)
 		return ;
-	*(int *)(mlx->image->ptr + ((X1 + Y1 * W_WIDTH) * BPP)) = COLOR;
+	*(int *)(mlx->img->ptr + ((mlx->env->x + mlx->env->y * W_WIDTH)
+																					* mlx->img->bpp)) = mlx->env->color;
 }
 
 void	*delete_image(t_mlx *mlx)
 {
-	if (mlx->image != NULL)
+	if (mlx->img != NULL)
 	{
-		if (mlx->image->image != NULL)
-			mlx_destroy_image(mlx->mlx, mlx->image->image);
-		ft_memdel((void **)&mlx->image);
+		if (mlx->img->image != NULL)
+			mlx_destroy_image(mlx->mlx, mlx->img->image);
+		ft_memdel((void **)&mlx->img);
 	}
 	return (NULL);
 }
 
 void	*new_image(t_mlx *mlx)
 {
-	if ((mlx->image = ft_memalloc(sizeof(t_image))) == NULL)
+	if ((mlx->img = ft_memalloc(sizeof(t_img))) == NULL)
 		return (NULL);
-	if ((mlx->image->image = mlx_new_image(mlx->mlx, W_WIDTH, W_HEIGHT))
+	if ((mlx->img->image = mlx_new_image(mlx->mlx, W_WIDTH, W_HEIGHT))
 			== NULL)
 		return (delete_image(mlx));
-	mlx->image->ptr = mlx_get_data_addr(mlx->image->image, &mlx->image->bpp,
-			&mlx->image->stride, &mlx->image->endian);
-	mlx->image->bpp /= 8;
-	return (mlx->image);
+	mlx->img->ptr = mlx_get_data_addr(mlx->img->image, &mlx->img->bpp,
+			&mlx->img->stride, &mlx->img->endian);
+	mlx->img->bpp /= 8;
+	return (mlx->img);
 }

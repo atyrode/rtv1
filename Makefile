@@ -15,7 +15,12 @@ NAME = rtv1
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 
-SRC = 	srcs/main.c
+SRC = 	srcs/main.c \
+				srcs/image.c \
+				srcs/parsing.c \
+				srcs/raytracing.c \
+				srcs/window.c \
+				srcs/hooks.c
 
 O_FILES = $(SRC:.c=.o)
 MLX_LIB = -L/usr/local/lib -lmlx -L. ./minilibx_macos/libmlx.a -framework OpenGL -framework Appkit

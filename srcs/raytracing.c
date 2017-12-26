@@ -12,7 +12,7 @@
 
 #include "./../includes/wolf3d.h"
 
-void	hit_rt(t_mlx *mlx)
+/*void	hit_rt(t_mlx *mlx)
 {
 	if (SIDE_DIST_X < SIDE_DIST_Y)
 	{
@@ -100,9 +100,11 @@ void	rt_colors(t_mlx *mlx, int i)
 		image_set_pixel(mlx);
 }
 
-void	raytracing(t_mlx *mlx)
+*/void	rtv1(t_mlx *mlx)
 {
-	int	i;
+	if (mlx)
+		return;
+	/*int	i;
 
 	i = 0;
 	while (i <= W_WIDTH)
@@ -125,5 +127,5 @@ void	raytracing(t_mlx *mlx)
 		ROT_SPEED = FRAME * 18.0;
 		i++;
 	}
-	return ;
+	return ;*/
 }
