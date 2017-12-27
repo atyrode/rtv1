@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 SRC = 	srcs/main.c \
 				srcs/image.c \
 				srcs/parsing.c \
-				srcs/raytracing.c \
+				srcs/rtv1.c \
 				srcs/window.c \
 				srcs/hooks.c
 

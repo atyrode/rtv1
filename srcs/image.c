@@ -14,10 +14,10 @@
 
 void	image_set_pixel(t_mlx *mlx)
 {
-	if (mlx->env->x < 0 || mlx->env->x >= W_WIDTH
-			|| mlx->env->y < 0 || mlx->env->y >= W_HEIGHT)
+	if (mlx->env->s_x < 0 || mlx->env->s_x >= W_WIDTH
+			|| mlx->env->s_y < 0 || mlx->env->s_y >= W_HEIGHT)
 		return ;
-	*(int *)(mlx->img->ptr + ((mlx->env->x + mlx->env->y * W_WIDTH)
+	*(int *)(mlx->img->ptr + ((mlx->env->s_x + mlx->env->s_y * W_WIDTH)
 																					* mlx->img->bpp)) = mlx->env->color;
 }
 

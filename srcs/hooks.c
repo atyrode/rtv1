@@ -17,7 +17,7 @@ int			key_press(int keycode, t_mlx *mlx)
 	mlx->keycode = keycode;
 	if (mlx->keycode == 53)
 		mlx_free(mlx);
-	redraw(mlx);
+	redraw(mlx, NULL);
 	return (0);
 }
 

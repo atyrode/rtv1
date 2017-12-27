@@ -77,13 +77,17 @@ char	**fill_tab(int line_value, char *file)
 		i++;
 	}
 	return (tab);
-}
+}*/
 
-*/int		parsing(char *filename, t_mlx *mlx)
+t_shapes		*parsing(char *filename, t_mlx *mlx)
 {
-	if (mlx)
+	t_shapes *shapes;
+
+	shapes = NULL;
+	if (mlx && shapes)
 		filename = "ok";
-	return (9000);
+
+	return (shapes);
 	/*int		fd;
 	char	*buffer;
 	char	**tab;

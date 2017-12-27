@@ -12,12 +12,14 @@
 
 #include "./../includes/rtv1.h"
 
-void	redraw(t_mlx *mlx)
+/* http://web.archive.org/web/20160323043749/http://thingsiamdoing.com/intro-to-ray-tracing/ */
+
+void	redraw(t_mlx *mlx, t_shapes *shapes)
 {
 	mlx_clear_window(mlx->mlx, mlx->win);
 	delete_image(mlx);
 	new_image(mlx);
-	rtv1(mlx);
+	rtv1(mlx, shapes);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->image, 0, 0);
 	mlx_do_sync(mlx->mlx);
 }
@@ -25,14 +27,15 @@ void	redraw(t_mlx *mlx)
 int		main(int argc, char **argv)
 {
 	t_mlx	*mlx;
+	t_shapes *shapes;
 
 	if (!(argc == 1) || !(argv))
 		return (-1);
 	if ((mlx = initialize()) == NULL)
 		return (-1);
-	parsing(NULL, mlx);
+	shapes = parsing(NULL, mlx);
 	hooks(mlx);
-	rtv1(mlx);
+	rtv1(mlx, shapes);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->image, 0, 0);
 	mlx_loop(mlx->mlx);
 	return (0);
