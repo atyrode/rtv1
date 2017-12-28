@@ -13,7 +13,7 @@
 NAME = rtv1
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g3 #-DDEBUG #-DDEBUG_PLUS
 
 SRC = 	srcs/main.c \
 				srcs/image.c \
@@ -35,12 +35,12 @@ make_libft:
 	make -C libft
 
 $(NAME): $(O_FILES)
-	$(CC) $(CC_FLAGS) $(O_FILES) -o $(NAME) $(LIBFT_L) $(MLX_LIB) $(GPU_L)
+	$(CC) $(CC_FLAGS) $(O_FILES) -o $(NAME) $(LIBFT_L) $(MLX_LIB)
 	make clean
 
 %.o:%.c includes/fractol.h srcs/size.h
 	$(CC) $(CC_FLAGS) -c -o $@ $< $(LIBFT_I) $(MLX_I) \
-	$(GPU_MACRO) $(PRECISION) $(SPECIAL)
+	$(GPU_MACRO)
 
 clean: cleanp clean_libft
 
@@ -64,6 +64,13 @@ rep: fcleanp all
 
 re_libft:
 	make -C libft re
+
+debug: set_debug_flags all
+
+set_debug_flags:
+	@echo "\x1b[1;33mDebug flags are being set."\
+	" Make clean if linkage error happen\x1b[0m"
+	$(eval DEBUG = -DDEBUG)
 
 GPU: set_gpu_flags all
 

@@ -38,3 +38,22 @@ t_mlx		*initialize(void)
 		return (mlx_free(mlx));
 	return (mlx);
 }
+
+t_shapes		*shapes_free(t_shapes *shapes)
+{
+	if (shapes->sph != NULL)
+		ft_memdel((void **)&shapes->sph);
+	ft_memdel((void **)&shapes);
+	exit(-1);
+}
+
+t_shapes		*initialize_shapes(void)
+{
+	t_shapes 	*shapes;
+
+	if ((shapes = ft_memalloc(sizeof(t_shapes))) == NULL)
+		return (NULL);
+	if ((shapes->sph = ft_memalloc(sizeof(t_sph))) == NULL)
+		return (shapes_free(shapes));
+	return (shapes);
+}

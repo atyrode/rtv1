@@ -24,15 +24,15 @@
 
 # define W_WIDTH 896
 # define W_HEIGHT 800
-# define FOV 90
+# define FOV 60
 # define SQR(x) x * x
 
 typedef struct 				s_sph
 {
-	int 		sphere_x;
-	int 		sphere_y;
-	int 		sphere_z;
-	int 		sphere_radius;
+	float 		sphere_x;
+	float 		sphere_y;
+	float 		sphere_z;
+	float 		sphere_radius;
 	int 		sphere_color;
 }											t_sph;
 
@@ -40,18 +40,18 @@ typedef struct				s_env
 {
 	int			s_x;
 	int			s_y;
-	int 		w_x;
-	int 		w_y;
-	int 		w_z;
-	int 		ray_x;
-	int 		ray_y;
-	int 		ray_z;
-	int 		camera_x;
-	int 		camera_y;
-	int 		camera_z;
-	int 		amplitude;
-	int 		dist_to_plane;
-	int 		constant;
+	float 	w_x;
+	float 	w_y;
+	float 	w_z;
+	float 	ray_x;
+	float 	ray_y;
+	float 	ray_z;
+	float 	camera_x;
+	float 	camera_y;
+	float 	camera_z;
+	float		amplitude;
+	float 	dist_to_plane;
+	float 	constant;
 	int 		n_sphere;
 	int 		n_square;
 	int			n_cone;
@@ -88,9 +88,10 @@ void	  	*delete_image(t_mlx *mlx);
 void	   	image_set_pixel(t_mlx *mlx);
 void	   	redraw(t_mlx *mlx, t_shapes *shapes);
 t_mlx		 	*mlx_free(t_mlx *mlx);
-t_shapes	*parsing(char *filename, t_mlx *mlx);
+int				parsing(char *filename, t_mlx *mlx, t_shapes *shapes);
 void		  rtv1(t_mlx *mlx, t_shapes *shapes);
 t_mlx			*initialize(void);
+t_shapes	*initialize_shapes(void);
 void			hooks(t_mlx *mlx);
 int 			check_ray(t_mlx *mlx, t_shapes *shapes);
 

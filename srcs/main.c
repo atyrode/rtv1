@@ -33,7 +33,9 @@ int		main(int argc, char **argv)
 		return (-1);
 	if ((mlx = initialize()) == NULL)
 		return (-1);
-	shapes = parsing(NULL, mlx);
+	if ((shapes = initialize_shapes()) == NULL)
+		return (-1);
+	parsing(NULL, mlx, shapes);
 	hooks(mlx);
 	rtv1(mlx, shapes);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->image, 0, 0);
