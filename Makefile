@@ -13,7 +13,7 @@
 NAME = rtv1
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g3 #-DDEBUG #-DDEBUG_PLUS
+CFLAGS = -Wall -Wextra -Werror -g3
 
 SRC = 	srcs/main.c \
 				srcs/image.c \
@@ -70,7 +70,7 @@ debug: set_debug_flags all
 set_debug_flags:
 	@echo "\x1b[1;33mDebug flags are being set."\
 	" Make clean if linkage error happen\x1b[0m"
-	$(eval DEBUG = -DDEBUG)
+	$(eval CFLAGS = -Wall -Wextra -Werror -g3 -DDEBUG)
 
 GPU: set_gpu_flags all
 
