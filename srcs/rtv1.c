@@ -15,9 +15,9 @@
 void rtvinit(t_mlx *mlx, t_shapes *shapes)
 {
 	mlx->env->n_sphere = 1;
-	shapes->sph->sphere_x = 5.;
-	shapes->sph->sphere_y = 1.;
-	shapes->sph->sphere_z = 1.;
+	shapes->sph->sphere_x = 0.;
+	shapes->sph->sphere_y = 0.;
+	shapes->sph->sphere_z = 0.;
 	shapes->sph->sphere_radius = 1.;
 	shapes->sph->sphere_color = 0xFEFEFE;
 	mlx->env->camera_x = 0.;
@@ -150,7 +150,7 @@ void	rtv1(t_mlx *mlx, t_shapes *shapes)
 					image_set_pixel(mlx);
 				}
 			}
-			#ifdef DEBUG
+			#ifdef DEBUGEWE
 				if (mlx->env->s_y == 100)
 					break;
 			}

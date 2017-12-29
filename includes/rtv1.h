@@ -75,7 +75,7 @@ typedef struct 				s_sph
 	float 		sphere_y;
 	float 		sphere_z;
 	float 		sphere_radius;
-	int 		sphere_color;
+	int 			sphere_color;
 }											t_sph;
 
 typedef struct				s_env
