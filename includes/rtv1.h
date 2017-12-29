@@ -26,8 +26,14 @@
 # define W_HEIGHT 800
 # define FOV 60
 # define SQR(x) x * x
+
+/* DEBUG */
+
 #ifdef DEBUG
 #	define PRINTD printf
+
+/* COLORS */
+
 #	define RED   "\x1B[31m"
 #	define GRN   "\x1B[32m"
 #	define YEL   "\x1B[33m"
@@ -36,6 +42,9 @@
 #	define CYN   "\x1B[36m"
 #	define WHT   "\x1B[37m"
 #	define RESET "\x1B[0m"
+
+/* PRINTF */
+
 # define SEPUP "\n\n╔═════════════════════════════════╗\n"
 # define X_Y "║SCREEN [X = "MAG"%-3i"RESET" | Y = "MAG"%-3i"RESET"] COORDS║\n", mlx->env->s_x, mlx->env->s_y
 # define SEPDO "╚═════════════════════════════════╝\n"
@@ -43,15 +52,22 @@
 # define W_XYZ "wrld_x = "BLU"%.5f"RESET" | wrld_y = "BLU"%.5f"RESET" | wrld_z = "BLU"%.5f"RESET" \n", mlx->env->w_x, mlx->env->w_y, mlx->env->w_z
 # define SPH "sph[x] = " GRN "%.5f" RESET " | sph[y] = " GRN "%.5f" RESET " | sph[z] = " GRN "%.5f" RESET " (sph[r] = " GRN "%.5f" RESET ") \n", shapes->sph->sphere_x, shapes->sph->sphere_y, shapes->sph->sphere_z, shapes->sph->sphere_radius
 # define RAY "ray[x] = " GRN "%.5f" RESET " | ray[y] = " GRN "%.5f" RESET " | ray[z] = " GRN "%.5f" RESET " \n", mlx->env->ray_x, mlx->env->ray_y, mlx->env->ray_z
-# define B "b = " YEL "%f" RESET "\n", -(dot_product(sphere, ray, 3))
-# define DET "det = %f - (%f) + %f = " YEL "%f\n" RESET, b * b, dot_product(sphere, sphere, 3), shapes->sph->sphere_radius * shapes->sph->sphere_radius, det
-# define SQRTDET "√det = "YEL"%f"RESET" \n", sqrt(det)
-# define T1 "t1 = (b - det) = ["CYN"%f"RESET"]\n", b - det
+# define A "a = (%f) + (%f) + (%f) = " YEL "%f" RESET "\n", SQR(mlx->env->ray_x), SQR(mlx->env->ray_y), SQR(mlx->env->ray_z), a
+# define B "b = 2 * (%f * -(%f) + %f * -(%f) + %f * -(%f)) = "YEL"%f"RESET"\n", mlx->env->ray_x, shapes->sph->sphere_x, mlx->env->ray_x, shapes->sph->sphere_y, mlx->env->ray_x, shapes->sph->sphere_z, b
+# define C "c = (%f) + (%f) + (%f) + (%f) = "YEL"%f"RESET"\n", SQR(shapes->sph->sphere_x), SQR(shapes->sph->sphere_y), SQR(shapes->sph->sphere_z), SQR(shapes->sph->sphere_radius), c
+# define DET "det = ["CYN"%f"RESET"]\n", det
+# define T "t1 = ["CYN"%f"RESET"] | t2 = ["CYN"%f"RESET"]\n", t1, t2
 # define SUM "sum (%f) += tab1[%i] (%f) * tab2[%i] (%f)\n", sum, i, tab1[i], i, tab2[i]
 # define SUM_F "sum = "RED"%f"RESET"\n", sum
+
+
 #else
+
 #	define PRINTD(format, args...) ((void)0)
+
 #endif
+
+/* STRUCTURES */
 
 typedef struct 				s_sph
 {
@@ -108,6 +124,8 @@ typedef struct			 	s_mlx
 	t_img  	*img;
 	t_env		*env;
 }						         t_mlx;
+
+/* PROTOTYPES */
 
 void	 	  *new_image(t_mlx *mlx);
 void	  	*delete_image(t_mlx *mlx);

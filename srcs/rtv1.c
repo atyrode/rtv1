@@ -15,9 +15,9 @@
 void rtvinit(t_mlx *mlx, t_shapes *shapes)
 {
 	mlx->env->n_sphere = 1;
-	shapes->sph->sphere_x = 2.;
-	shapes->sph->sphere_y = 0.;
-	shapes->sph->sphere_z = 0.;
+	shapes->sph->sphere_x = 5.;
+	shapes->sph->sphere_y = 1.;
+	shapes->sph->sphere_z = 1.;
 	shapes->sph->sphere_radius = 1.;
 	shapes->sph->sphere_color = 0xFEFEFE;
 	mlx->env->camera_x = 0.;
@@ -41,34 +41,68 @@ float 	dot_product(float *tab1, float *tab2, int n)
 		return (sum);
 }
 
+float 	delta(t_mlx *mlx, t_shapes *shapes)
+{
+		float a;
+		float	b;
+		float c;
+		float det;
+		float t1;
+		float t2;
+
+		a = SQR(mlx->env->ray_x) + SQR(mlx->env->ray_y) + SQR(mlx->env->ray_z);
+		PRINTD(A);
+		//simplification par dot product de a possible
+		b = 2 * (mlx->env->ray_x * -(shapes->sph->sphere_x) +
+							mlx->env->ray_y * -(shapes->sph->sphere_y) +
+							mlx->env->ray_z * -(shapes->sph->sphere_z));
+		PRINTD(B);
+		//simplification par dot product de b possible
+		c = SQR(shapes->sph->sphere_x) + SQR(shapes->sph->sphere_y)
+				+ SQR(shapes->sph->sphere_z) + SQR(shapes->sph->sphere_radius);
+		PRINTD(C);
+		//simplification par dot product de c possible
+
+		if ((det = SQR(b) - (4 * a * c)) < 0)
+		{
+				PRINTD(DET);
+				return (0);
+		}
+		else if (det == 0)
+		{
+				PRINTD(DET);
+				return ((-(b)) / (2 * a));
+		}
+		else
+		{
+			t1 = (-(b) - sqrt(det)) / (2 * a);
+			t2 = (-(b) + sqrt(det)) / (2 * a);
+			PRINTD(T);
+			if (t1 < t2)
+				return (t1);
+			else
+				return (t2);
+		}
+		return (0);
+}
+
 // Ray-sphere intersection.
 // px,py,pz=(ray origin position - sphere position),
 float 	check_ray(t_mlx *mlx, t_shapes *shapes)
 {
 		float det;
-		float b;
-		float sphere[3] = {shapes->sph->sphere_x,
-											shapes->sph->sphere_y, shapes->sph->sphere_z};
+		float sphere[3] = {shapes->sph->sphere_x, shapes->sph->sphere_y, shapes->sph->sphere_z};
 		float ray[3] = {mlx->env->ray_x, mlx->env->ray_y, mlx->env->ray_z};
 
-    //calculate the determinant
+		if (sphere[1])
 		PRINTD(SPH);
+		if (ray[1])
 		PRINTD(RAY);
-    b = -(dot_product(sphere, ray, 3));
-		PRINTD(B);
-		det = SQR(b) - (dot_product(sphere, sphere, 3)) + SQR(shapes->sph	->sphere_radius);
-		PRINTD(DET);
-    if (det < 0) //if it's less than 0, there's no intersection, return -1
-        return (0);
 
-    //calculate the two values for t
-    det = sqrt(det);
-		PRINTD(SQRTDET);
-    //always return t1, as it'll always be the shortest distance
-		//t1 = b - det;
-		//t2 = b + det;
-		PRINTD(T1);
-    return (b - det);
+		if ((det = delta(mlx, shapes)) == 0)
+			return (0);
+		else
+    	return (det);
 }
 
 void	rtv1(t_mlx *mlx, t_shapes *shapes)
