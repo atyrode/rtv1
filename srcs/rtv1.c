@@ -15,59 +15,60 @@
 void rtvinit(t_mlx *mlx, t_shapes *shapes)
 {
 	mlx->env->n_sphere = 1;
-	shapes->sph->sphere_x = 5.;
-	shapes->sph->sphere_y = 5.;
-	shapes->sph->sphere_z = 5.;
-	shapes->sph->sphere_radius = 2.;
+	shapes->sph->sphere_x = 2.;
+	shapes->sph->sphere_y = 0.;
+	shapes->sph->sphere_z = 0.;
+	shapes->sph->sphere_radius = 1.;
 	shapes->sph->sphere_color = 0xFEFEFE;
 	mlx->env->camera_x = 0.;
 	mlx->env->camera_y = 0.;
 	mlx->env->camera_z = 0.;
 }
 
-int 	dot_product(int *sphere, int *ray, int n)
+float 	dot_product(float *tab1, float *tab2, int n)
 {
-		int 	sum;
+		float 	sum;
 		int 	i;
 
-		sum = 0;
+		sum = 0.;
 		i = -1;
 		while (++i < n)
 		{
-			sum += sphere[i] * ray[i];
+			sum += tab1[i] * tab2[i];
+			//PRINTD(SUM);
 		}
-		//PRINTD ("sum = %i\n", sum);
+		//PRINTD(SUM_F);
 		return (sum);
 }
 
 // Ray-sphere intersection.
 // px,py,pz=(ray origin position - sphere position),
-int 	check_ray(t_mlx *mlx, t_shapes *shapes)
+float 	check_ray(t_mlx *mlx, t_shapes *shapes)
 {
 		float det;
 		float b;
-		int sphere[3] = {shapes->sph->sphere_x,
+		float sphere[3] = {shapes->sph->sphere_x,
 											shapes->sph->sphere_y, shapes->sph->sphere_z};
-		int ray[3] = {mlx->env->ray_x, mlx->env->ray_y, mlx->env->ray_z};
+		float ray[3] = {mlx->env->ray_x, mlx->env->ray_y, mlx->env->ray_z};
 
     //calculate the determinant
 		PRINTD(SPH);
 		PRINTD(RAY);
     b = -(dot_product(sphere, ray, 3));
 		PRINTD(B);
-		det = SQR(b) - (dot_product(ray, ray, 3)) + SQR(shapes->sph->sphere_radius);
+		det = SQR(b) - (dot_product(sphere, sphere, 3)) + SQR(shapes->sph	->sphere_radius);
 		PRINTD(DET);
     if (det < 0) //if it's less than 0, there's no intersection, return -1
         return (0);
 
     //calculate the two values for t
     det = sqrt(det);
-    //t1 = b - det;
-    //t2 = b + det;  //not really necessary -> longest distance!
-
+		PRINTD(SQRTDET);
     //always return t1, as it'll always be the shortest distance
+		//t1 = b - det;
+		//t2 = b + det;
 		PRINTD(T1);
-    return (b + det);
+    return (b - det);
 }
 
 void	rtv1(t_mlx *mlx, t_shapes *shapes)
@@ -80,9 +81,11 @@ void	rtv1(t_mlx *mlx, t_shapes *shapes)
 		mlx->env->s_y = -1;
 		while (++mlx->env->s_y < W_HEIGHT)
 		{
+			PRINTD(SEPUP);
 			PRINTD(X_Y);
+			PRINTD(SEPDO);
 			//determine real-world pixel coordinates
-			mlx->env->dist_to_plane = 10;
+			mlx->env->dist_to_plane = 100;
 			mlx->env->constant = W_WIDTH / (mlx->env->dist_to_plane * tan(FOV));
 			PRINTD(CONST);
 			mlx->env->w_x = mlx->env->dist_to_plane;

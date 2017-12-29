@@ -36,14 +36,19 @@
 #	define CYN   "\x1B[36m"
 #	define WHT   "\x1B[37m"
 #	define RESET "\x1B[0m"
-# define X_Y "x = %i | y = %i\n", mlx->env->s_x, mlx->env->s_y
-# define CONST "constant = %f \n", mlx->env->constant
-# define W_XYZ "w_x = %f | w_y = %f | w_z = %f \n", mlx->env->w_x, mlx->env->w_y, mlx->env->w_z
-# define SPH "sphere[1] = " GRN "%f" RESET " | sphere[2] = " GRN "%f " RESET "| sphere[3] = " GRN "%f" RESET " \n", shapes->sph->sphere_x, shapes->sph->sphere_y, shapes->sph->sphere_z
-# define RAY "ray[1] = " GRN "%f" RESET " | ray[2] = " GRN "%f " RESET "| ray[3] = " GRN "%f" RESET " \n", mlx->env->ray_x, mlx->env->ray_y, mlx->env->ray_z
-# define B "b = -(%i) = " YEL "%f " RESET "\n", dot_product(sphere, ray, 3), b
-# define DET "det = %f - (%i) + %f = " YEL "%f\n" RESET, b * b, dot_product(ray, ray, 3), shapes->sph->sphere_radius * shapes->sph->sphere_radius, det
-# define T1 "t1 = %f - %f = ["CYN"%f"RESET"]\n\n", b, det, b - det
+# define SEPUP "\n\n╔═════════════════════════════════╗\n"
+# define X_Y "║SCREEN [X = "MAG"%-3i"RESET" | Y = "MAG"%-3i"RESET"] COORDS║\n", mlx->env->s_x, mlx->env->s_y
+# define SEPDO "╚═════════════════════════════════╝\n"
+# define CONST "constant = "RED"%f"RESET" \n", mlx->env->constant
+# define W_XYZ "wrld_x = "BLU"%.5f"RESET" | wrld_y = "BLU"%.5f"RESET" | wrld_z = "BLU"%.5f"RESET" \n", mlx->env->w_x, mlx->env->w_y, mlx->env->w_z
+# define SPH "sph[x] = " GRN "%.5f" RESET " | sph[y] = " GRN "%.5f" RESET " | sph[z] = " GRN "%.5f" RESET " (sph[r] = " GRN "%.5f" RESET ") \n", shapes->sph->sphere_x, shapes->sph->sphere_y, shapes->sph->sphere_z, shapes->sph->sphere_radius
+# define RAY "ray[x] = " GRN "%.5f" RESET " | ray[y] = " GRN "%.5f" RESET " | ray[z] = " GRN "%.5f" RESET " \n", mlx->env->ray_x, mlx->env->ray_y, mlx->env->ray_z
+# define B "b = " YEL "%f" RESET "\n", -(dot_product(sphere, ray, 3))
+# define DET "det = %f - (%f) + %f = " YEL "%f\n" RESET, b * b, dot_product(sphere, sphere, 3), shapes->sph->sphere_radius * shapes->sph->sphere_radius, det
+# define SQRTDET "√det = "YEL"%f"RESET" \n", sqrt(det)
+# define T1 "t1 = (b - det) = ["CYN"%f"RESET"]\n", b - det
+# define SUM "sum (%f) += tab1[%i] (%f) * tab2[%i] (%f)\n", sum, i, tab1[i], i, tab2[i]
+# define SUM_F "sum = "RED"%f"RESET"\n", sum
 #else
 #	define PRINTD(format, args...) ((void)0)
 #endif
@@ -114,6 +119,6 @@ void		  rtv1(t_mlx *mlx, t_shapes *shapes);
 t_mlx			*initialize(void);
 t_shapes	*initialize_shapes(void);
 void			hooks(t_mlx *mlx);
-int 			check_ray(t_mlx *mlx, t_shapes *shapes);
+float 		check_ray(t_mlx *mlx, t_shapes *shapes);
 
 #endif
