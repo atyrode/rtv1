@@ -12,22 +12,26 @@
 
 #include "./../includes/rtv1.h"
 
-void rtvinit(t_mlx *mlx, t_shapes *shapes)
+void 			rtvinit(t_mlx *mlx, t_shapes *shapes)
 {
-	mlx->env->n_sphere = 1;
-	shapes->sph->sphere_x = 0.;
-	shapes->sph->sphere_y = 0.;
-	shapes->sph->sphere_z = 0.;
+	shapes->n_sphere = 1;
+	shapes->sph->sphere[1] = 200.;
+	shapes->sph->sphere[2] = 0.;
+	shapes->sph->sphere[3] = 0.;
 	shapes->sph->sphere_radius = 1.;
 	shapes->sph->sphere_color = 0xFEFEFE;
-	mlx->env->camera_x = 0.;
-	mlx->env->camera_y = 0.;
-	mlx->env->camera_z = 0.;
+	mlx->env->camera[1] = 1.;
+	mlx->env->camera[2] = 1.;
+	mlx->env->camera[3] = 1.;
+	mlx->env->camera_fov = 80;
+	mlx->env->viewplane_dist = 100;
+	mlx->env->constant = W_WIDTH /
+			(mlx->env->viewplane_dist * tan(mlx->env->camera_fov));
 }
 
-float 	dot_product(float *tab1, float *tab2, int n)
+double 			dot_product(double *tab1, double *tab2, int n)
 {
-		float 	sum;
+		double 	sum;
 		int 	i;
 
 		sum = 0.;
@@ -41,43 +45,44 @@ float 	dot_product(float *tab1, float *tab2, int n)
 		return (sum);
 }
 
-float 	delta(t_mlx *mlx, t_shapes *shapes)
+double 			delta(t_mlx *mlx, t_shapes *shapes)
 {
-		float a;
-		float	b;
-		float c;
-		float det;
-		float t1;
-		float t2;
+		double 	a;
+		double	b;
+		double 	c;
+		double 	det;
+		double 	t1;
+		double 	t2;
 
-		a = SQR(mlx->env->ray_x) + SQR(mlx->env->ray_y) + SQR(mlx->env->ray_z);
+		a = SQR(mlx->env->ray[1]) + SQR(mlx->env->ray[2])
+									+ SQR(mlx->env->ray[3]);
 		PRINTD(A);
 		//simplification par dot product de a possible
-		b = 2 * (mlx->env->ray_x * -(shapes->sph->sphere_x) +
-							mlx->env->ray_y * -(shapes->sph->sphere_y) +
-							mlx->env->ray_z * -(shapes->sph->sphere_z));
+		b = 2 * (mlx->env->ray[1] * -(shapes->sph->sphere[1]) +
+							mlx->env->ray[2] * -(shapes->sph->sphere[2]) +
+							mlx->env->ray[3] * -(shapes->sph->sphere[3]));
 		PRINTD(B);
 		//simplification par dot product de b possible
-		c = SQR(shapes->sph->sphere_x) + SQR(shapes->sph->sphere_y)
-				+ SQR(shapes->sph->sphere_z) + SQR(shapes->sph->sphere_radius);
+		c = SQR(shapes->sph->sphere[1]) + SQR(shapes->sph->sphere[2])
+				+ SQR(shapes->sph->sphere[3]) + SQR(shapes->sph->sphere_radius);
 		PRINTD(C);
 		//simplification par dot product de c possible
 
 		if ((det = SQR(b) - (4 * a * c)) < 0)
 		{
-				PRINTD(DET);
-				return (0);
+			PRINTS(ZERO);
+			return (0);
 		}
 		else if (det == 0)
 		{
-				PRINTD(DET);
-				return ((-(b)) / (2 * a));
+			PRINTS(ONE);
+			return ((-(b)) / (2 * a));
 		}
 		else
 		{
 			t1 = (-(b) - sqrt(det)) / (2 * a);
 			t2 = (-(b) + sqrt(det)) / (2 * a);
-			PRINTD(T);
+			PRINTS(TWO);
 			if (t1 < t2)
 				return (t1);
 			else
@@ -86,62 +91,82 @@ float 	delta(t_mlx *mlx, t_shapes *shapes)
 		return (0);
 }
 
-// Ray-sphere intersection.
 // px,py,pz=(ray origin position - sphere position),
-float 	check_ray(t_mlx *mlx, t_shapes *shapes)
+double			check_ray(t_mlx *mlx, t_shapes *shapes)
 {
-		float det;
-		float sphere[3] = {shapes->sph->sphere_x, shapes->sph->sphere_y, shapes->sph->sphere_z};
-		float ray[3] = {mlx->env->ray_x, mlx->env->ray_y, mlx->env->ray_z};
+		double 	det;
+		/*double 	b;
+		double	t1;
+		double	t2;
 
-		if (sphere[1])
-		PRINTD(SPH);
-		if (ray[1])
-		PRINTD(RAY);
+		//PRINTD(SPH);
+		//PRINTD(RAY);
+
+		b = -dot_product(mlx->env->ray, shapes->sph->sphere, 3);
+		det = (SQR(b)) - dot_product(mlx->env->ray, mlx->env->ray, 3) +
+											(SQR(shapes->sph->sphere_radius));
+
+		PRINTS(ONE);
+		if (det < 0)
+		{
+			PRINTS(ZERO);
+			return (0);
+		}
+
+		det = sqrt(det);
+		t1 = b - det;
+		t2 = b + det;
+
+		PRINTS(TWO);
+		return (t1);*/
+
+		//code tenté avec Olivier
 
 		if ((det = delta(mlx, shapes)) == 0)
 			return (0);
 		else
     	return (det);
+
 }
 
-void	rtv1(t_mlx *mlx, t_shapes *shapes)
+void			rtv1(t_mlx *mlx, t_shapes *shapes)
 {
-	int tmp;
+	int			tmp;
+
 	rtvinit(mlx, shapes);
-	mlx->env->s_x = -1;
-	while (++mlx->env->s_x < W_WIDTH)
+	mlx->env->screen_x = -1;
+	while (++mlx->env->screen_x < W_WIDTH)
 	{
-		mlx->env->s_y = -1;
-		while (++mlx->env->s_y < W_HEIGHT)
+		mlx->env->screen_y = -1;
+		while (++mlx->env->screen_y < W_HEIGHT)
 		{
-			PRINTD(SEPUP);
-			PRINTD(X_Y);
-			PRINTD(SEPDO);
+			//PRINTD(SEPUP);
+			//PRINTD(X_Y);
+			//PRINTD(SEPDO);
+
+			//x = [1] | y = [2] | z = [3]
+
 			//determine real-world pixel coordinates
-			mlx->env->dist_to_plane = 100;
-			mlx->env->constant = W_WIDTH / (mlx->env->dist_to_plane * tan(FOV));
-			PRINTD(CONST);
-			mlx->env->w_x = mlx->env->dist_to_plane;
-			mlx->env->w_y = (mlx->env->s_x - W_WIDTH / 2) / mlx->env->constant;
-			mlx->env->w_z = (mlx->env->s_y - W_HEIGHT / 2) / mlx->env->constant;
-			PRINTD(W_XYZ);
+			mlx->env->viewplane[1] = mlx->env->viewplane_dist;
+			mlx->env->viewplane[2] = (mlx->env->screen_x - W_WIDTH / 2) / mlx->env->constant;
+			mlx->env->viewplane[3] = (mlx->env->screen_y - W_HEIGHT / 2) / mlx->env->constant;
+			//PRINTD(W_XYZ);
 
 			//determine the ray direction vector
-			mlx->env->ray_x = mlx->env->w_x - mlx->env->camera_x;
-			mlx->env->ray_y = mlx->env->w_y - mlx->env->camera_y;
-			mlx->env->ray_z = mlx->env->w_z - mlx->env->camera_z;
-			mlx->env->amplitude = 1 / sqrt(SQR(mlx->env->ray_x) +
-																			SQR(mlx->env->ray_y) +
-																			SQR(mlx->env->ray_z));
+			mlx->env->ray[1] = mlx->env->viewplane[1] - mlx->env->camera[1];
+			mlx->env->ray[2] = mlx->env->viewplane[2] - mlx->env->camera[2];
+			mlx->env->ray[3] = mlx->env->viewplane[3] - mlx->env->camera[3];
+			mlx->env->amplitude = 1 / sqrt(SQR(mlx->env->ray[1]) +
+											SQR(mlx->env->ray[2]) +
+											SQR(mlx->env->ray[3]));
 
 			//get the amplitude of this vector and normalize it
-			mlx->env->ray_x *= mlx->env->amplitude;
-			mlx->env->ray_y *= mlx->env->amplitude;
-			mlx->env->ray_z *= mlx->env->amplitude;
+			mlx->env->ray[1] *= mlx->env->amplitude;
+			mlx->env->ray[2] *= mlx->env->amplitude;
+			mlx->env->ray[3] *= mlx->env->amplitude;
 
-			//loop through all spheres in the scene
-			tmp = mlx->env->n_sphere;
+			//loop through all spheres in the scene*/
+			tmp = shapes->n_sphere;
 			while(tmp-- > 0)
 			{
 				if (check_ray(mlx, shapes))
@@ -150,11 +175,11 @@ void	rtv1(t_mlx *mlx, t_shapes *shapes)
 					image_set_pixel(mlx);
 				}
 			}
-			#ifdef DEBUGEWE
-				if (mlx->env->s_y == 100)
+			#ifdef LIMIT
+				if (mlx->env->screen_y == 100)
 					break;
 			}
-			if (mlx->env->s_x == 100)
+			if (mlx->env->screen_x == 100)
 				break;
 			#else
 			}

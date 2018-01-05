@@ -13,7 +13,7 @@
 NAME = rtv1
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -DDEBUG -DSOLUTION -DGENERAL #-DLIMIT
 
 SRC = 	srcs/main.c \
 				srcs/image.c \
