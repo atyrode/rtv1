@@ -140,6 +140,16 @@ void			rtv1(t_mlx *mlx, t_shapes *shapes)
 		mlx->env->screen_y = -1;
 		while (++mlx->env->screen_y < W_HEIGHT)
 		{
+			tmp = shapes->n_sphere;
+			while(tmp-- > 0)
+			{
+				if (check_ray(mlx, shapes))
+				{
+					mlx->env->color = shapes->sph->sphere_color;
+					image_set_pixel(mlx);
+				}
+			}
+			/*
 			//PRINTD(SEPUP);
 			//PRINTD(X_Y);
 			//PRINTD(SEPDO);
@@ -165,7 +175,7 @@ void			rtv1(t_mlx *mlx, t_shapes *shapes)
 			mlx->env->ray[2] *= mlx->env->amplitude;
 			mlx->env->ray[3] *= mlx->env->amplitude;
 
-			//loop through all spheres in the scene*/
+			//loop through all spheres in the scene
 			tmp = shapes->n_sphere;
 			while(tmp-- > 0)
 			{
@@ -174,7 +184,7 @@ void			rtv1(t_mlx *mlx, t_shapes *shapes)
 					mlx->env->color = shapes->sph->sphere_color;
 					image_set_pixel(mlx);
 				}
-			}
+			}*/
 			#ifdef LIMIT
 				if (mlx->env->screen_y == 100)
 					break;
